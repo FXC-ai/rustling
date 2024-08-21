@@ -1,21 +1,19 @@
 #![allow(dead_code)]
 
 #[derive(Debug)]
-struct Point
-{
+struct Point {
     x: u64,
     y: u64,
 }
 
 #[derive(Debug)]
-enum Message
-{
+enum Message {
+    // TODO: Implement the message variant types based on their usage below.
     Resize{width:u32, height:u32},
     Move(Point),
     Echo(String),
     ChangeColor(u8,u8,u8),
     Quit,
-    // TODO: Define the different variants used below.
 }
 
 impl Message {

@@ -26,18 +26,33 @@ fn build_scores_table(results: &str) -> HashMap<&str, TeamScores> {
         let team_2_name = split_iterator.next().unwrap();
         let team_1_score: u8 = split_iterator.next().unwrap().parse().unwrap();
         let team_2_score: u8 = split_iterator.next().unwrap().parse().unwrap();
-
+        
+        // println!("{} {} {} {} ", team_1_name, team_2_name, team_1_score, team_2_score);
         // TODO: Populate the scores table with the extracted details.
         // Keep in mind that goals scored by team 1 will be the number of goals
         // conceded by team 2. Similarly, goals scored by team 2 will be the
         // number of goals conceded by team 1.
-    }
+
+        let compteur_team1 = scores.entry(team_1_name).or_insert(TeamScores{goals_scored:0, goals_conceded:0});
+        compteur_team1.goals_scored += team_1_score;
+        compteur_team1.goals_conceded += team_2_score;
+        let compteur_team2 = scores.entry(team_2_name).or_insert(TeamScores{goals_scored:0, goals_conceded:0});
+        compteur_team2.goals_scored += team_2_score;
+        compteur_team2.goals_conceded += team_1_score;
+    }   
 
     scores
 }
 
 fn main() {
     // You can optionally experiment here.
+    const R: &str = "England,France,4,2
+    France,Italy,3,1
+    Poland,Spain,2,0
+    Germany,England,2,1
+    England,Spain,1,0";
+
+    build_scores_table(R);
 }
 
 #[cfg(test)]
