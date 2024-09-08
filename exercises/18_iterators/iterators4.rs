@@ -9,11 +9,27 @@ fn factorial(num: u64) -> u64 {
     // - imperative style loops (for/while)
     // - additional variables
     // For an extra challenge, don't use:
-    // - recursion
+    // - recursion¨
+
+    let mut r : u64 = 1;
+    let mut cur : u64 = 1;
+
+    while cur < num
+    {
+        r *= cur + 1;
+        cur += 1;
+    }
+    r
 }
 
 fn main() {
     // You can optionally experiment here.
+    println!("{}", factorial(0));
+    println!("{}", factorial(1));
+    println!("{}", factorial(2));
+    println!("{}", factorial(4));
+
+    let t = 1..10;
 }
 
 #[cfg(test)]
