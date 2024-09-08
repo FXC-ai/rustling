@@ -8,26 +8,49 @@ enum DivisionError {
     NotDivisible,
 }
 
-// TODO: Calculate `a` divided by `b` if `a` is evenly divisible by `b`.
-// Otherwise, return a suitable error.
-fn divide(a: i64, b: i64) -> Result<i64, DivisionError> {
-    todo!();
+fn divide(a: i64, b: i64) -> Result<i64, DivisionError>
+{
+    match a.checked_div_euclid(b) 
+    {
+        Some(result) => 
+        {
+            if result * b == a {Ok(result)}
+            else {Err(DivisionError::NotDivisible)}         
+        },
+        None => 
+        {
+            if b == 0 {Err(DivisionError::DivideByZero)}
+            else{Err(DivisionError::IntegerOverflow)}
+        },
+    }
 }
 
 // TODO: Add the correct return type and complete the function body.
 // Desired output: `Ok([1, 11, 1426, 3])`
-fn result_with_list() {
+fn result_with_list() -> Result<Vec<i64>, DivisionError>
+{
     let numbers = [27, 297, 38502, 81];
-    let division_results = numbers.into_iter().map(|n| divide(n, 27));
+    let division_results : Result<Vec<i64>, DivisionError> = numbers.into_iter().map(|n| divide(n, 27)).collect();
+    division_results
+    // for r in division_results
+    // Err(DivisionError::DivideByZero)
 }
+
 
 // TODO: Add the correct return type and complete the function body.
 // Desired output: `[Ok(1), Ok(11), Ok(1426), Ok(3)]`
-fn list_of_results() {
+fn list_of_results() -> Vec<Result<i64, DivisionError>>
+{
     let numbers = [27, 297, 38502, 81];
-    let division_results = numbers.into_iter().map(|n| divide(n, 27));
+    let division_results:Vec<Result<i64, DivisionError>> = numbers.into_iter().map(|n| divide(n, 27)).collect();
+    division_results
 }
 
+// Le comportement que tu observes est dû à l'interaction entre l'itérateur (map), la fonction divide, et la méthode collect. Rust est très flexible dans la manière dont il gère les itérateurs et les collections, permettant de manipuler des Result avec beaucoup de souplesse.
+
+// map applique simplement la transformation (ici, divide) sur chaque élément de l'itérateur.
+// collect détermine le type final (soit un Result<Vec<i64>, DivisionError>, soit un Vec<Result<i64, DivisionError>>), en fonction du contexte dans lequel il est utilisé.
+// C'est cela qui donne cette impression que la fonction map "change de type", alors qu'en réalité, c'est collect qui adapte la collecte en fonction du contexte.
 fn main() {
     // You can optionally experiment here.
 }
